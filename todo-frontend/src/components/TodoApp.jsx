@@ -27,32 +27,22 @@ const TodoApp = () => {
     setLoading(false);
   };
 // Add new todo
-  const handleAdd = async () => {
-    if (!newTask.trim()) return;
+ // optional: sirf backend success ke baad add karo
+const handleAdd = async () => {
+  if (!newTask.trim()) return;
 
-    const tempTodo = {
-      _id: Date.now(), // temporary id
-      title: newTask,
-      completed: false,
-    };
-
-    setTodos(prev => [...prev, tempTodo]); // UI instantly update
+  try {
+    const res = await createTodo({ title: newTask, completed: false });
+    setTodos(prev => [...prev, res.data]); // backend se aaya task add karo
     setNewTask("");
     setStatusMessage("Task added successfully");
-    setTimeout(() => {
-      setStatusMessage("");
-    }, 2000);
-
-    try {
-      await createTodo({ title: newTask, completed: false });
-    } catch (err) {
-      console.log(err);
-      setStatusMessage("Error adding task ");
-      setTimeout(() => {
-        setStatusMessage("");
-      }, 2000);
-    }
-  };
+    setTimeout(() => setStatusMessage(""), 2000);
+  } catch (err) {
+    console.log(err);
+    setStatusMessage("Error adding task");
+    setTimeout(() => setStatusMessage(""), 2000);
+  }
+};
   // Toggle todo completion
   const handleToggle = async (id) => {
     setTodos(prev =>
