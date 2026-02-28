@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/todos";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/todos`;
 
 const BASE_URL = "https://todo-app-mern-r0pa.onrender.com";
 
